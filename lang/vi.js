@@ -8,11 +8,26 @@ export const transValidation = {
 export const transErrors = {
   account_in_use: "Email này đã được sử dụng. ",
   account_removed: "Tài khoản đã bị gỡ hỏi hệ thống, liên hệ với bộ phận hỗ trợ để được giúp đỡ",
-  account_not_active: "Email đã được đăng ký nhưng chưa active, vui lòng kiểm tra email của bạn"
-}
+  account_not_active: "Email đã được đăng ký nhưng chưa active, vui lòng kiểm tra email của bạn",
+  token_undefined: "Token không tồn tại."
+};
 
 export const transSuccess = {
   userCreate: (userEmail) => {
     return `Tài khoản <strong>${userEmail}</strong> đã được tạo, vui lòng kiểm tra email để active tài khoản`
-  }
-}
+  },
+  account_actived: "Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào ứng dụng."
+};
+
+export const transMail = {
+  subject: "Xác nhận tài khoản chat",
+  template: (linkVerify) => {
+    return`
+      <h2>Bạn nhân được Email này vì đã đăng ký tài khoản chat trên ứng dụng web chat with node</h2>
+      <h3>Vui lòng click vào link bên dưới để xác nhận kích hoạt tài khoản</h3>
+      <h3><a href = "${linkVerify}" target="blank">${linkVerify}</a></h3>
+      <h4>Nếu tin rằng đây là nhầm lẫn xin hãy bỏ qua. Trân trọng.</h4>
+    `;
+  },
+  send_failed: "Có lỗi trong quá trình gưi email."
+};

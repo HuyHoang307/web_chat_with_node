@@ -9,3 +9,9 @@ export DB_PASSWORD=**
 #config app enviroment variable
 export APP_HOST=***
 export APP_PORT=***
+
+#config admin email account
+export MAIL_USER=***
+export MAIL_PASSWORD=***
+export MAIL_HOST=***
+export MAIL_PORT=**
