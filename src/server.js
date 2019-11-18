@@ -33,4 +33,40 @@ initRoutes(app);
 
 app.listen(process.env.APP_PORT, process.env.APP_HOST, ()=>{
   console.log(`Hello Hoang, I'm running at ${process.env.APP_HOST}:${process.env.APP_PORT}`);
+
+// import pem from "pem";
+// import https from "https";
+
+// pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
+//   if (err) {
+//     throw err
+//   }
+//   let app = express();
+// //connect to mongo
+// ConnectDB();
+
+// //config session
+// configSession(app);
+
+// //config view engine
+// configViewEngine(app);
+
+// // Enable post data for request
+// app.use(bodyParser.urlencoded({extended: true}));
+
+// //enable flash message
+// app.use(connectFlash());
+
+// //config passprot js
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// //init routes
+// initRoutes(app);
+
+//   https.createServer({ key: keys.serviceKey, cert: keys.certificate }, app).listen(process.env.APP_PORT, process.env.APP_HOST, ()=>{
+//     console.log(`Hello Hoang, I'm running at ${process.env.APP_HOST}:${process.env.APP_PORT}`);
+//   })
 });
+
+
