@@ -80,10 +80,22 @@ $(document).ready(function() {
       processData: false,
       data: userAvatar,
       success: function(result) {
-        //
+        //display success
+        $(".user-modal-alert-success").find("span").text(result.message);
+        $(".user-modal-alert-success").css("display", "block");
+        //update Avatar at navbar
+        $("#navbar-avatar").attr("src", result.imageSrc);
+        originAvatarSrc = result.imageSrc;
+        // set all
+        $("#input-btn-cancel-update-user").click();
       },
       error: function(error) {
-        //
+        // Display error
+        $(".user-modal-alert-error").find("span").text(error.responseText);
+        $(".user-modal-alert-error").css("display", "block");
+
+        // set all
+        $("#input-btn-cancel-update-user").click();
       }
     });
     // console.log(userAvatar);

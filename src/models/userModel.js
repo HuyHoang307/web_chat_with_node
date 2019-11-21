@@ -64,6 +64,24 @@ UserSchema.statics = {
 
   findByGoogleUid (uid) {
     return this.findOne({"google.uid": uid}).exec();
+  },
+
+  updateUser(id, item) {
+    return this.findByIdAndUpdate(id, item).exec();// return old item after update
+  },
+  findAllForAddContact(eprecatedUserIds, keyword) {
+    return this.find({
+      $and: [
+        {"_id": {$nin: eprecatedUserIds}},
+        {"local.isActive": true},
+        {$or: [
+          {"username": {"$regex": new RegExp(keyword, "i")}},
+          {"local.email": {"$regex": new RegExp(keyword, "i")}},
+          {"facebook.email": {"$regex": new RegExp(keyword, "i")}},
+          {"google.email": {"$regex": new RegExp(keyword, "i")}}
+        ]}
+      ]
+    }, {_id: 1, username: 1, address: 1, avatar: 1}).exec();
   }
 };
 

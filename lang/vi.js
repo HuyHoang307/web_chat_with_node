@@ -2,7 +2,8 @@ export const transValidation = {
   email_incorrect: "Email phải có dạng example@gmail.com",
   gender_incorrect: "Ủa có gì đó sai sai với giới tính!",
   password_incorrect: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ khoa, chữ thường, chứ số và ký tự đặc biệt",
-  password_confirmation_incorrect: "Nhập lại mất khảu chưa chính xác!"
+  password_confirmation_incorrect: "Nhập lại mất khảu chưa chính xác!",
+  keyword_find_user:"Lỗi từ khóa tìm kiếm, chỉ cho phép chữ cái số, và ký tự khoảng trống."
 };
 
 export const transErrors = {
@@ -11,7 +12,9 @@ export const transErrors = {
   account_not_active: "Email đã được đăng ký nhưng chưa active, vui lòng kiểm tra email của bạn",
   token_undefined: "Token không tồn tại.",
   login_failed: "Sai tải khoản hoặc mật khẩu!",
-  server_error: "Có lỗi ở phía server. Làm ơn báo cáo bộ phận hỗ trợ. Xin cảm ơn!"
+  server_error: "Có lỗi ở phía server. Làm ơn báo cáo bộ phận hỗ trợ. Xin cảm ơn!",
+  avatar_type: "Kiểu dữ liệu không hợp lệ.",
+  avatar_size: "Kích thước ảnh tối đa cho phép là 1MB"
 };
 
 export const transSuccess = {
@@ -22,7 +25,8 @@ export const transSuccess = {
   loginSuccess: (username) => {
     return `Xin chao ${username}, chúc bạn một ngày tốt lành.`;
   },
-  logout_success: "Đăng xuất tài khoản thành công!"
+  logout_success: "Đăng xuất tài khoản thành công!",
+  avatar_updated: "Cập nhật ảnh đại diện thành công!"
 };
 
 export const transMail = {
