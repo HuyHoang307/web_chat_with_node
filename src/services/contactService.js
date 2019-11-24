@@ -43,14 +43,53 @@ let addNew = (currentUserId, contactId) => {
   });
 }
 
-let removeRequestContact = (currentUserId, contactId) => {
+let removeContact = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
-    let removeReq = await contactModel.removeRequestContact(currentUserId, contactId);
+    let removeContact = await contactModel.removeContact(currentUserId, contactId);
+    if (removeContact.result.n === 0) {
+      return reject(false);
+    }
+    resolve(true);
+  });
+}
+
+let removeRequestContactSent = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    let removeReq = await contactModel.removeRequestContactSent(currentUserId, contactId);
     if (removeReq.result.n === 0) {
       return reject(false);
     }
     //remove notification
     await NotificationModel.model.removeRequestContactNotification(currentUserId, contactId, NotificationModel.types.ADD_CONTACT);
+    resolve(true);
+  });
+}
+
+let removeRequestContactReceived = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    let removeReq = await contactModel.removeRequestContactReceived(currentUserId, contactId);
+    if (removeReq.result.n === 0) {
+      return reject(false);
+    }
+    //remove notification
+    // await NotificationModel.model.removeRequestContactReceivedNotification(currentUserId, contactId, NotificationModel.types.ADD_CONTACT);
+    resolve(true);
+  });
+}
+
+let approveRequestContactReceived = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    let approveReq = await contactModel.approveRequestContactReceived(currentUserId, contactId);
+    if (approveReq.nModified === 0) {
+      return reject(false);
+    }
+    let notificationItem = {
+      senderId: currentUserId,
+      recieverId: contactId,
+      type: NotificationModel.types.APPROVE_CONTACT
+    };
+    await NotificationModel.model.createNew(notificationItem);
+
     resolve(true);
   });
 }
@@ -140,7 +179,10 @@ let countAllContactsReceived = (currentUserId) => {
 module.exports = {
   findUsersContact: findUsersContact,
   addNew: addNew,
-  removeRequestContact: removeRequestContact,
+  removeContact: removeContact,
+  removeRequestContactSent: removeRequestContactSent,
+  removeRequestContactReceived: removeRequestContactReceived,
+  approveRequestContactReceived: approveRequestContactReceived,
   getContacts: getContacts,
   getContactsReceived: getContactsReceived,
   getContactsSent: getContactsSent,
