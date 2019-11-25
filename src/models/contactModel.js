@@ -84,7 +84,10 @@ ContactSchema.statics = {
       {"userId": contactId},
       {"status": false}
      ] 
-    }, {"status": true}).exec();
+    }, {
+      "status": true,
+      "updateAt": Data.now()
+    }).exec();
   },
 
   getContacts(userId, limit) {
@@ -96,7 +99,7 @@ ContactSchema.statics = {
         ]},
         {"status": true}
       ]
-    }).sort({"createAt": -1}).limit(limit).exec();
+    }).sort({"updateAt": -1}).limit(limit).exec();
   },
 
   getContactsSent(userId, limit) {

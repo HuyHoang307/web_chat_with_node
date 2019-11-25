@@ -677,7 +677,7 @@ label:focus,
 }
 
 .left a.create-group-chat {
-  display: none;
+  display: block;
   float: left;
   width: 40px;
   height: 40px;
