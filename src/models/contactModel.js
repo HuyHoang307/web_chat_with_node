@@ -86,7 +86,7 @@ ContactSchema.statics = {
      ] 
     }, {
       "status": true,
-      "updateAt": Data.now()
+      "updateAt": Date.now()
     }).exec();
   },
 

@@ -1,13 +1,17 @@
 function approveRequestContactReceived() {
   $(".user-approve-request-contact-received").unbind("click").on("click", function () {
     let targetId = $(this).data("uid");
+    console.log(targetId);
     $.ajax({
       url: "/contact/approve-request-contact-received",
       type: "put",
       data: { uid: targetId },
       success: function (data) {
+        console.log(data);
+        
         if (data.success) {
           let userInfo = $("#request-contact-received").find(`ul li[data-uid = ${targetId}]`);
+          
           $(userInfo).find("div.user-approve-request-contact-received").remove();
           $(userInfo).find("div.user-remove-request-contact-received").remove();
           $(userInfo).find("div.contactPanel")
@@ -20,6 +24,7 @@ function approveRequestContactReceived() {
               </div>
     `);
           let userInfoHtml = userInfo.get(0).outerHTML;
+          
           $("#contacts").find("ul").prepend(userInfoHtml);
           $(userInfo).remove();
 
@@ -32,6 +37,10 @@ function approveRequestContactReceived() {
 
           socket.emit("approve-request-contact-received", { contactId: targetId });
         }
+      },
+      error: function(error) {
+        console.log(error);
+        
       }
     });
   });

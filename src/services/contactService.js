@@ -80,6 +80,8 @@ let removeRequestContactReceived = (currentUserId, contactId) => {
 let approveRequestContactReceived = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
     let approveReq = await contactModel.approveRequestContactReceived(currentUserId, contactId);
+    console.log(approveReq);
+    
     if (approveReq.nModified === 0) {
       return reject(false);
     }
@@ -123,7 +125,7 @@ let getContactsSent = (currentUserId) => {
 
       resolve(await Promise.all(users));
     } catch (error) {
-      reject(err);
+      reject(error);
     }
   });
 }
@@ -138,7 +140,7 @@ let getContactsReceived = (currentUserId) => {
 
       resolve(await Promise.all(users));
     } catch (error) {
-      reject(err);
+      reject(error);
     }
   });
 }
@@ -149,7 +151,7 @@ let countAllContacts = (currentUserId) => {
       let count = await contactModel.countAllContacts(currentUserId);
       resolve(count);
     } catch (error) {
-      reject(err);
+      reject(error);
     }
   });
 }
@@ -160,7 +162,7 @@ let countAllContactsSent = (currentUserId) => {
       let count = await contactModel.countAllContactsSent(currentUserId);
       resolve(count);
     } catch (error) {
-      reject(err);
+      reject(error);
     }
   });
 }
@@ -171,7 +173,7 @@ let countAllContactsReceived = (currentUserId) => {
       let count = await contactModel.countAllContactsReceived(currentUserId);
       resolve(count);
     } catch (error) {
-      reject(err);
+      reject(error);
     }
   });
 }
