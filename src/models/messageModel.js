@@ -9,12 +9,12 @@ let MessageSchema = new Schema({
   messageType: String,
   sender: {
     id: String,
-    username:String,
+    name:String,
     avatar: String
   },
-  reciever: {
+  receiver: {
     id: String,
-    username:String,
+    name:String,
     avatar: String
   },
   text: String,
@@ -25,7 +25,10 @@ let MessageSchema = new Schema({
 });
 
 MessageSchema.statics = {
-  getMessages(senderId, receiverId, limit) {
+  createNew(item) {
+    return this.create(item);
+  },
+  getMessagesInPersonal(senderId, receiverId, limit) {
     
     return this.find({
       $or: [
@@ -39,6 +42,10 @@ MessageSchema.statics = {
         ]}
       ]
     }).sort({"createAt": 1}).limit(limit).exec();
+  },
+   
+  getMessagesInGroup(receiverId, limit) {
+    return this.find({"receiverId": receiverId}).sort({"createAt": 1}).limit(limit).exec();
   }
 }
 

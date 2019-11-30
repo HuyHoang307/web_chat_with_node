@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 
 let NotificationSchema = new Schema({
   senderId: String,
-  recieverId: String, 
+  receiverId: String, 
   type: String,
   isRead: {type: Boolean, default: false},
   createAt: {type: Number, default: Date.now},
@@ -15,11 +15,11 @@ NotificationSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  removeRequestContactNotification(senderId, recieverId, type) {
+  removeRequestContactNotification(senderId, receiverId, type) {
     return this.remove({
      $and:[
       {"senderId": senderId},
-      {"recieverId": recieverId},
+      {"receiverId": receiverId},
       {"type": type}
      ] 
     }).exec();
@@ -30,7 +30,7 @@ NotificationSchema.statics = {
  * @param {number} limit 
  */
   getByUserIdAndLimit(userId, limit) {
-    return this.find({"recieverId": userId}).sort({"createAt": -1}).limit(limit).exec();
+    return this.find({"receiverId": userId}).sort({"createAt": -1}).limit(limit).exec();
   },
 /**
  * count alll notification unread
@@ -39,7 +39,7 @@ NotificationSchema.statics = {
   countNotifUnread(userId) {
     return this.count({
       $and: [
-        {"recieverId": userId},
+        {"receiverId": userId},
         {"isRead":false}
       ]
     });

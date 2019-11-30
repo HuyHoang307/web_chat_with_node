@@ -3,7 +3,8 @@ export const transValidation = {
   gender_incorrect: "Ủa có gì đó sai sai với giới tính!",
   password_incorrect: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ khoa, chữ thường, chứ số và ký tự đặc biệt",
   password_confirmation_incorrect: "Nhập lại mất khảu chưa chính xác!",
-  keyword_find_user:"Lỗi từ khóa tìm kiếm, chỉ cho phép chữ cái số, và ký tự khoảng trống."
+  keyword_find_user:"Lỗi từ khóa tìm kiếm, chỉ cho phép chữ cái số, và ký tự khoảng trống.",
+  message_text_emoji_incorrect:"Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự, tối đa 500 ký tự"
 };
 
 export const transErrors = {
@@ -14,7 +15,8 @@ export const transErrors = {
   login_failed: "Sai tải khoản hoặc mật khẩu!",
   server_error: "Có lỗi ở phía server. Làm ơn báo cáo bộ phận hỗ trợ. Xin cảm ơn!",
   avatar_type: "Kiểu dữ liệu không hợp lệ.",
-  avatar_size: "Kích thước ảnh tối đa cho phép là 1MB"
+  avatar_size: "Kích thước ảnh tối đa cho phép là 1MB",
+  conversation_not_found: "Cuộc trò chuyện không tồn tại."
 };
 
 export const transSuccess = {

@@ -35,7 +35,7 @@ let addNew = (currentUserId, contactId) => {
     //create notification
     let notificationItem = {
       senderId: currentUserId,
-      recieverId: contactId,
+      receiverId: contactId,
       type: NotificationModel.types.ADD_CONTACT
     };
     await NotificationModel.model.createNew(notificationItem);
@@ -87,7 +87,7 @@ let approveRequestContactReceived = (currentUserId, contactId) => {
     }
     let notificationItem = {
       senderId: currentUserId,
-      recieverId: contactId,
+      receiverId: contactId,
       type: NotificationModel.types.APPROVE_CONTACT
     };
     await NotificationModel.model.createNew(notificationItem);

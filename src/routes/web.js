@@ -1,6 +1,6 @@
 import express from "express";
-import {home, auth, user, contact} from "./../controllers/index";
-import {authValid, contactValid} from "./../validation/index";
+import {home, auth, user, contact, message} from "./../controllers/index";
+import {authValid, contactValid, messageValid} from "./../validation/index";
 import passport from "passport";
 import initPassprotLocal from "./../controllers/passportController/local";
 import initPassprotFacebook from "./../controllers/passportController/facebook";
@@ -52,6 +52,8 @@ let initRoutes = (app) => {
   router.delete("/contact/remove-request-contact-sent",auth.checkLoggedIn, contact.removeRequestContactSent);
   router.delete("/contact/remove-request-contact-received",auth.checkLoggedIn, contact.removeRequestContactReceived);
   router.put("/contact/approve-request-contact-received",auth.checkLoggedIn, contact.approveRequestContactReceived);
+
+  router.post("/message/add-new-text-emoji",auth.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji);
 
   return app.use("/", router);
 };
