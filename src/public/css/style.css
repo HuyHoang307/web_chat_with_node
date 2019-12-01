@@ -1335,3 +1335,7 @@ label:focus,
   width: 100%;
   height: 100%;
 }
+
+.show-number-members{
+  color: #2c3e50 !important;
+}

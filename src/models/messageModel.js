@@ -41,11 +41,11 @@ MessageSchema.statics = {
           {"senderId": receiverId}
         ]}
       ]
-    }).sort({"createAt": 1}).limit(limit).exec();
+    }).sort({"createAt": -1}).limit(limit).exec();
   },
    
   getMessagesInGroup(receiverId, limit) {
-    return this.find({"receiverId": receiverId}).sort({"createAt": 1}).limit(limit).exec();
+    return this.find({"receiverId": receiverId}).sort({"createAt": -1}).limit(limit).exec();
   }
 }
 
