@@ -54,6 +54,7 @@ let initRoutes = (app) => {
   router.put("/contact/approve-request-contact-received",auth.checkLoggedIn, contact.approveRequestContactReceived);
 
   router.post("/message/add-new-text-emoji",auth.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji);
+  router.post("/message/add-new-image",auth.checkLoggedIn, message.addNewImage);
 
   return app.use("/", router);
 };

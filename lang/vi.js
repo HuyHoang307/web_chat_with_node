@@ -16,7 +16,9 @@ export const transErrors = {
   server_error: "Có lỗi ở phía server. Làm ơn báo cáo bộ phận hỗ trợ. Xin cảm ơn!",
   avatar_type: "Kiểu dữ liệu không hợp lệ.",
   avatar_size: "Kích thước ảnh tối đa cho phép là 1MB",
-  conversation_not_found: "Cuộc trò chuyện không tồn tại."
+  conversation_not_found: "Cuộc trò chuyện không tồn tại.",
+  image_message_type: "Kiểu dữ liệu không hợp lệ, chỉ chấp nhận kiểu png, jpeg & jpg.",
+  image_message_size: "Kích thước ảnh tối đa cho phép là 1MB",
 };
 
 export const transSuccess = {
