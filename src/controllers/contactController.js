@@ -1,4 +1,5 @@
 import {contact} from "./../services/index";
+import { validationResult } from "express-validator/check";
 
 let findUsersContact = async (req, res) => {
   /**
@@ -75,11 +76,29 @@ let approveRequestContactReceived = async (req, res) => {
   }
 }
 
+let searchFriends = async (req, res) => {
+  /**
+ * validation keyword phia server(20)
+ */
+  try {
+    let currentUserId = req.user._id;
+    let keyword = req.params.keyword;
+
+    let users = await contact.searchFriends(currentUserId, keyword);
+    
+    return res.render("main/groupChat/sections/_searchFriends", {users});
+  } catch (error) {
+    
+    return res.status(500).send(error);
+  }
+}
+
 module.exports = {
   findUsersContact: findUsersContact,
   addNew: addNew,
   removeContact: removeContact,
   removeRequestContactSent: removeRequestContactSent,
   removeRequestContactReceived: removeRequestContactReceived,
-  approveRequestContactReceived: approveRequestContactReceived
+  approveRequestContactReceived: approveRequestContactReceived,
+  searchFriends: searchFriends
 }

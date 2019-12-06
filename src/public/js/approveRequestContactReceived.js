@@ -1,14 +1,11 @@
 function approveRequestContactReceived() {
   $(".user-approve-request-contact-received").unbind("click").on("click", function () {
     let targetId = $(this).data("uid");
-    console.log(targetId);
     $.ajax({
       url: "/contact/approve-request-contact-received",
       type: "put",
       data: { uid: targetId },
-      success: function (data) {
-        console.log(data);
-        
+      success: function (data) {        
         if (data.success) {
           let userInfo = $("#request-contact-received").find(`ul li[data-uid = ${targetId}]`);
           

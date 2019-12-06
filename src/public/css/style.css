@@ -424,8 +424,9 @@ label:focus,
 }
 
 .navbar-brand>img {
-  margin: -12px 0px 0px 7px;
-  width: 150px;
+  margin: -16px 0px 0px 7px;
+  width: 70px;
+  height: 55px;
   -webkit-filter: brightness(130%);
   filter: brightness(130%);
 }
@@ -1266,12 +1267,12 @@ label:focus,
   border-color: #ccc;
 }
 
-.list-user-added button#create-group-chat {
+.list-user-added button#btn-create-group-chat {
   border-color: #2ACC77;
   background-color: #2ACC77;
 }
 
-.list-user-added button#cancel-group-chat {
+.list-user-added button#btn-cancel-group-chat {
   border-color: #ff7675;
   background-color: #ff7675;
   margin-left: 5px;
@@ -1343,4 +1344,10 @@ label:focus,
 .message-time-realtime {
   color: #e74c3c !important;
   font-weight: bold
+}
+.navbar-brand>img.logo{
+  display: inline;
+}
+.navbar-brand>span{
+  font-size: 32px;
 }

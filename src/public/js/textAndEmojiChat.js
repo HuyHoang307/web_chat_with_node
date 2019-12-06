@@ -4,7 +4,7 @@ function textAndEmojiChat(divId) {
     if(element.which === 13) {
       let targetId = $(`#write-chat-${divId}`).data("chat");
       let messageVal = $(`#write-chat-${divId}`).val();
-
+      
       if (!targetId.length || !messageVal.length) {
         return false;
       }
@@ -70,11 +70,12 @@ $(document).ready(function () {
     messageOfYou.text(response.message.text);
     let convertEmojiMessage = emojione.toImage(messageOfYou.html());
     if (response.currentGroupId) {
-      let senderAvatar = `<img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}">`;
+      let senderAvatar = `<img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}">`;
       messageOfYou.html(`${senderAvatar} ${convertEmojiMessage}`);
       divId = response.currentGroupId;
     }else{
       messageOfYou.html(convertEmojiMessage);
+      
       divId = response.currentUserId;
     }
 

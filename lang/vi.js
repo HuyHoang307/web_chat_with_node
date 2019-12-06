@@ -4,7 +4,9 @@ export const transValidation = {
   password_incorrect: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ khoa, chữ thường, chứ số và ký tự đặc biệt",
   password_confirmation_incorrect: "Nhập lại mất khảu chưa chính xác!",
   keyword_find_user:"Lỗi từ khóa tìm kiếm, chỉ cho phép chữ cái số, và ký tự khoảng trống.",
-  message_text_emoji_incorrect:"Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự, tối đa 500 ký tự"
+  message_text_emoji_incorrect:"Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự, tối đa 500 ký tự",
+  add_new_group_users_incorrect:"Vui lòng thêm bạn bè vào nhóm, tối thiểu 2 thành viên.",
+  add_new_group_name_incorrect:"Tên nhóm không hợp lệ tối thiểu 5 kí tự, tối đa 30 kí tự và không chứa kí tự đặc biệt."
 };
 
 export const transErrors = {

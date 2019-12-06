@@ -79,9 +79,7 @@ let removeRequestContactReceived = (currentUserId, contactId) => {
 
 let approveRequestContactReceived = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
-    let approveReq = await contactModel.approveRequestContactReceived(currentUserId, contactId);
-    console.log(approveReq);
-    
+    let approveReq = await contactModel.approveRequestContactReceived(currentUserId, contactId);    
     if (approveReq.nModified === 0) {
       return reject(false);
     }
@@ -178,6 +176,32 @@ let countAllContactsReceived = (currentUserId) => {
   });
 }
 
+let searchFriends = (currentUserId, keyword) => {
+  return new Promise(async (resolve, reject) => {
+    let friendIds = [];
+    let friends = await contactModel.getFriends(currentUserId);
+    
+    friends.forEach((item) => {
+      
+      if(item.userId!= currentUserId) {
+        
+        friendIds.push(item.userId);
+      }
+      if(item.contactId!= currentUserId) {
+        
+        friendIds.push(item.contactId)
+      }
+      
+    });
+
+    friendIds = _.uniqBy(friendIds);
+    
+    let users = await UserModel.findAllToAddGroupChat(friendIds, keyword);
+    
+    resolve(users);
+  });
+}
+
 module.exports = {
   findUsersContact: findUsersContact,
   addNew: addNew,
@@ -190,5 +214,6 @@ module.exports = {
   getContactsSent: getContactsSent,
   countAllContacts: countAllContacts,
   countAllContactsSent: countAllContactsSent,
-  countAllContactsReceived: countAllContactsReceived
+  countAllContactsReceived: countAllContactsReceived,
+  searchFriends: searchFriends
 }
