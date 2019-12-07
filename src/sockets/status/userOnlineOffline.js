@@ -1,4 +1,4 @@
-import {pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray} from "./../../helpers/socketHelper";
+import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from "./../../helpers/socketHelper";
 /**
  * 
  * @param {*} io from socket 
@@ -6,26 +6,36 @@ import {pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray} from ".
 let userOnlineOffline = (io) => {
   let clients = {};
   io.on("connection", (socket) => {
-    clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);    
+    clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);
     socket.request.user.chatGroupIds.forEach(group => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
-    
-  let listUserOnline = Object.keys(clients);
-    //step1: Emit to user after login or f5 web page
-    socket.emit("server-send-list-user-online", listUserOnline);
+    socket.on("new-group-created", (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
+    });
+    socket.on("member-received-group-chat", (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+    });
 
-    //step2: Emit to all another users when has new user online
-    socket.broadcast.emit("server-send-when-new-user-online", socket.request.user._id);
+    socket.on("check-status", () => {
+      let listUserOnline = Object.keys(clients);
+      //step1: Emit to user after login or f5 web page
+      socket.emit("server-send-list-user-online", listUserOnline);
+
+      //step2: Emit to all another users when has new user online
+      socket.broadcast.emit("server-send-when-new-user-online", socket.request.user._id);
+
+    });
+
 
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
       socket.request.user.chatGroupIds.forEach(group => {
-      clients = removeSocketIdFromArray(clients, group._id, socket);
+        clients = removeSocketIdFromArray(clients, group._id, socket);
       });
-    //step3: Emit to all another users when has new user offline
-    socket.broadcast.emit("server-send-when-new-user-offline", socket.request.user._id);
-    });       
+      //step3: Emit to all another users when has new user offline
+      socket.broadcast.emit("server-send-when-new-user-offline", socket.request.user._id);
+    });
   });
 }
 

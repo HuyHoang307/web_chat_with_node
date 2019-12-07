@@ -15,13 +15,16 @@ function textAndEmojiChat(divId) {
       if ($(`#write-chat-${divId}`).hasClass("chat-in-group")) {
         dataTextEmojiForSend.isChatGroup = true;
       }
+      
       $.post("/message/add-new-text-emoji", dataTextEmojiForSend, function(data) {
+        
         let dataToEmit = {
           message: data.message
         }
         let messageOfMe = $(`<div class="convert-emoji bubble me" data-mess-id=${data.message._id}></div>`)
         messageOfMe.text(data.message.text);
         let convertEmojiMessage = emojione.toImage(messageOfMe.html());
+        
         if (dataTextEmojiForSend.isChatGroup) {
           let senderAvatar = `<img src="/images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}">`;
           messageOfMe.html(`${senderAvatar} ${convertEmojiMessage}`);
@@ -69,13 +72,13 @@ $(document).ready(function () {
     let messageOfYou = $(`<div class="convert-emoji bubble you" data-mess-id=${response.message._id}></div>`);
     messageOfYou.text(response.message.text);
     let convertEmojiMessage = emojione.toImage(messageOfYou.html());
+    
     if (response.currentGroupId) {
       let senderAvatar = `<img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}">`;
       messageOfYou.html(`${senderAvatar} ${convertEmojiMessage}`);
       divId = response.currentGroupId;
     }else{
       messageOfYou.html(convertEmojiMessage);
-      
       divId = response.currentUserId;
     }
 

@@ -8,6 +8,7 @@ import typingOn from "./chat/typingOn";
 import typingOff from "./chat/typingOff";
 import chatImage from "./chat/chatImage";
 import userOnlineOffline from "./status/userOnlineOffline";
+import newGroupChat from "./group/newGroupChat";
 
 /**
  * 
@@ -24,6 +25,7 @@ let initSockets = (io) => {
   typingOff(io);
   chatImage(io);
   userOnlineOffline(io);
+  newGroupChat(io);
 }
 
 module.exports = initSockets;
