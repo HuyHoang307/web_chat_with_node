@@ -38,7 +38,7 @@ let getAllConversationItems = (currentUserId) => {
       let allConversationWithMessagesPromise = allConversations.map(async (conversation) => {
         conversation = conversation.toObject();
                 
-        if (conversation.member){
+        if (conversation.members){
           let getMessages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
           conversation.messages = _.reverse(getMessages);
         }else{
@@ -55,8 +55,6 @@ let getAllConversationItems = (currentUserId) => {
       allConversationWithMessages = _.sortBy(allConversationWithMessages, (item) => {
         return -item.updateAt;
       });
-      
-
       resolve({
         allConversationWithMessages: allConversationWithMessages
       });

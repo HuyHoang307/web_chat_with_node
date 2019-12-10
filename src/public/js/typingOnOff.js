@@ -1,7 +1,7 @@
 function typingOn(divId) {
   let targetId = $(`#write-chat-${divId}`).data("chat");
-  if ($(`#write-chat-${divId}`).hasClass("chat-in-group")) {
-    
+  
+  if ($(`#write-chat-${divId}`).hasClass("chat-in-group")) {  
     socket.emit("user-is-typing", {groupId: targetId});
   }else{
     socket.emit("user-is-typing", {contactId: targetId});
@@ -21,16 +21,14 @@ $(document).ready(function() {
   socket.on("response-user-is-typing", function(response) {
     let messageTyping = `<div class="bubble you bubble-typing-gif">
                             <img src="/images/chat/typing.gif" />
-                         </div>`;
-    if (response.currentGroupId) {
-      console.log(response);
-            
+                         </div>`;    
+    if (response.currentGroupId) {            
       if(response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
         let checkTyping = $(`.chat[data-chat=${response.currentGroupId}]`).find("div.bubble-typing-gif");
         if(checkTyping.length) {
           return false;
         }
-        $(`.chat[data-chat = ${response.currentUserId}]`).append(messageTyping);
+        $(`.chat[data-chat = ${response.currentGroupId}]`).append(messageTyping);
         nineScrollRight(response.currentGroupId);
       }
     } else {
