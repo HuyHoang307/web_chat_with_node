@@ -1,5 +1,5 @@
 function videoChat(divId) {
-  $(`#video-chat-${divId}`).unbind("click").on("click", function() {
+  $(`#video-chat-${divId}`).unbind("click").on("click", function () {
     let targetId = $(this).data("chat");
     let callerName = $("#navbar-username").text();
 
@@ -10,22 +10,39 @@ function videoChat(divId) {
 
     //step 01 of caller
     socket.emit("caller-check-listener-online-or-not", dataToEmit);
-    
+
   });
+}
+
+function playVideoStream(videoTagId, stream) {
+  let video = document.getElementById(videoTagId);
+  video.srcObject = stream;
+  video.onloadeddata = function () {
+    video.play();
+  }
+};
+
+function closeVideoStream(stream) {
+  return stream.getTracks().forEach(track => track.stop());
 }
 
 $(document).ready(function () {
   //step 02 of caller
-  socket.on("server-send-listener-is-offline", function() {
+  socket.on("server-send-listener-is-offline", function () {
     alertify.notify("Người dùng này hiện không trực tuyến.", "error", 7);
   });
   let getPeerId = "";
-  let peer = new Peer();
-  peer.on("open", function(peerId) {
+  let peer = new Peer({
+    key: "peerjs",
+    host: "peerjs-server-trungquandev.herokuapp.com",
+    secure: true,
+    port: 443
+  });
+  peer.on("open", function (peerId) {
     getPeerId = peerId;
   });
   //step 03 of listener
-  socket.on("server-request-peer-id-of-listener", function(response) {
+  socket.on("server-request-peer-id-of-listener", function (response) {
     let listenerName = $("#navbar-username").text();
     let dataToEmit = {
       callerId: response.callerId,
@@ -34,12 +51,13 @@ $(document).ready(function () {
       listenerName: listenerName,
       listenerPeerId: getPeerId
     };
-    
+
     //step 04 of listener
     socket.emit("listener-emit-peer-id-to-server", dataToEmit);
   });
+  let timerInterval;
   //step 05 of listener
-  socket.on("server-send-peer-id-of-listener-to-caller", function(response) {
+  socket.on("server-send-peer-id-of-listener-to-caller", function (response) {
     let dataToEmit = {
       callerId: response.callerId,
       listenerId: response.listenerId,
@@ -50,8 +68,7 @@ $(document).ready(function () {
 
     //step 6 of caller
     socket.emit("caller-request-call-to-server", dataToEmit);
-    
-    let timerInterval
+
     Swal.fire({
       title: `Đang gọi cho &nbsp; <span style = "color: #2ecc71;">${response.listenerName}</span> &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
@@ -66,23 +83,24 @@ $(document).ready(function () {
       timer: 30000,
       timerProgressBar: true,
       onBeforeOpen: () => {
-        $("#btn-cancel-call").unbind("click").on("click", function(){
+        $("#btn-cancel-call").unbind("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
 
           //step 07 of caller
           socket.emit("caller-cancel-request-call-to server", dataToEmit);
         })
-
-        Swal.showLoading()
-        timerInterval = setInterval(() => {
-          Swal.getContent().querySelector("strong")
-            .textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-        }, 1000);
+        if (Swal.getContent().querySelector !== null) {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            Swal.getContent().querySelector("strong")
+              .textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 1000);
+        }
       },
       onOpen: () => {
         //step 12 of caller
-        socket.on("server-send-reject-call-listener", function(response){
+        socket.on("server-send-reject-call-listener", function (response) {
           Swal.close();
           clearInterval(timerInterval);
 
@@ -96,14 +114,6 @@ $(document).ready(function () {
             confirmButtonText: "Xác nhận"
           })
         });
-        //step 13 of caller
-        socket.on("server-send-accept-call-to-caller", function(response){
-          Swal.close();
-          clearInterval(timerInterval);
-
-          console.log("caller okkkk...");
-          
-        })
       },
       onClose: () => {
         clearInterval(timerInterval)
@@ -113,7 +123,7 @@ $(document).ready(function () {
     });
   });
   //step 08 of listener
-  socket.on("server-send-request-call-listener", function(response) {
+  socket.on("server-send-request-call-listener", function (response) {
     let dataToEmit = {
       callerId: response.callerId,
       listenerId: response.listenerId,
@@ -121,7 +131,6 @@ $(document).ready(function () {
       listenerName: response.listenerName,
       listenerPeerId: response.listenerPeerId
     };
-    let timerInterval
     Swal.fire({
       title: `<span style = "color: #2ecc71;">${response.listenerName}</span> &nbsp; muốn trò chuyện video với bạn &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
@@ -139,7 +148,7 @@ $(document).ready(function () {
       timer: 30000,
       timerProgressBar: true,
       onBeforeOpen: () => {
-        $("#btn-reject-call").unbind("click").on("click", function(){
+        $("#btn-reject-call").unbind("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
 
@@ -147,34 +156,28 @@ $(document).ready(function () {
           socket.emit("listener-reject-request-call-to-server", dataToEmit);
         });
 
-        $("#btn-accept-call").unbind("click").on("click", function(){
+        $("#btn-accept-call").unbind("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
 
           //step 11  of listener
           socket.emit("listener-accept-request-call-to-server", dataToEmit);
         });
-
-        Swal.showLoading()
-        timerInterval = setInterval(() => {
-          Swal.getContent().querySelector("strong")
-            .textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-        }, 1000);
+        if (Swal.getContent().querySelector !== null) {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            Swal.getContent().querySelector("strong")
+              .textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 1000);
+        }
       },
       onOpen: () => {
         // step 09 of listener
-        socket.on("server-send-cancel-resquet-call-listener", function(response) {
+        socket.on("server-send-cancel-resquet-call-listener", function (response) {
           Swal.close();
           clearInterval(timerInterval);
         });
-        //step 14 of listener
-        socket.on("server-send-accept-call-to-listener", function(response){
-          Swal.close();
-          clearInterval(timerInterval);
 
-          console.log("listener okkkk...");
-          
-        })
       },
       onClose: () => {
         clearInterval(timerInterval)
@@ -183,6 +186,89 @@ $(document).ready(function () {
       return false;
     });
   });
+  //step 13 of caller
+  socket.on("server-send-accept-call-to-caller", function (response) {
+    Swal.close();
+    clearInterval(timerInterval);
 
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+    getUserMedia({video: true, audio: true}, function(stream) {
+      //show modal
+      $("#streamModal").modal("show");
+      // play my streams in local 
+      playVideoStream("local-stream", stream);
+      // call to listener
+      let call = peer.call(response.listenerPeerId, stream);
+      //listen & play stream of listener
+      call.on("stream", function(remoteStream) {
+        //play stream of listener
+        playVideoStream("remote-stream", remoteStream);
+      });
+      //close modal: remove stream
+      $("#streamModal").on("hidden.bs.modal", function() {
+        closeVideoStream(stream);
+        Swal.fire({
+          type: "info",
+          title: `Đã kết thúc cuộc gọi với &nbsp <span style = "color: #2ecc71;">${response.listenerName}</span>`,
+          backdrop: "rgba(85, 85, 85, 0.4)",
+          width: "52rem",
+          allowOutsideClick: false,
+          confirmButtonColor: "#2ecc71",
+          confirmButtonText: "Xác nhận"
+        })
+      })
+    }, function(err) {
+      console.log("Failed to get local stream" ,err);
+      if(err,toString() === "NotAllowedError: Permission denied"){
+        alertify.notify("Yêu cầu truy nhập tiết bị bị từ chối. Vui lòng mở lại trong phần cài đặt của trình duyệt.", "error", 7)
+      }
+      if(err,toString() === "NotFoundError: Requested device not found"){
+        alertify.notify("Không tìm thấy thiết bị trên máy tính của bạn", "error", 7)
+      }
+    });
+  });
+
+  //step 14 of listener
+  socket.on("server-send-accept-call-to-listener", function (response) {
+    Swal.close();
+    clearInterval(timerInterval);
+    
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+    peer.on("call", function(call) {
+      getUserMedia({video: true, audio: true}, function(stream) {
+        //show modal
+        $("#streamModal").modal("show");
+        // play my streams in local of listener 
+        playVideoStream("local-stream", stream);
+        call.answer(stream); // Answer the call with an A/V stream.
+        call.on("stream", function(remoteStream) {
+           //play stream of caller
+          playVideoStream("remote-stream", remoteStream);
+        });
+
+        //close modal: remove stream
+        $("#streamModal").on("hidden.bs.modal", function() {
+          closeVideoStream(stream);
+          Swal.fire({
+            type: "info",
+            title: `Đã kết thúc cuộc gọi với &nbsp <span style = "color: #2ecc71;">${response.callerName}</span>`,
+            backdrop: "rgba(85, 85, 85, 0.4)",
+            width: "52rem",
+            allowOutsideClick: false,
+            confirmButtonColor: "#2ecc71",
+            confirmButtonText: "Xác nhận"
+          })
+        })
+      }, function(err) {
+        console.log("Failed to get local stream" ,err);
+        if(err,toString() === "NotAllowedError: Permission denied"){
+          alertify.notify("Yêu cầu truy nhập tiết bị bị từ chối. Vui lòng mở lại trong phần cài đặt của trình duyệt.", "error", 7)
+        }
+        if(err,toString() === "NotFoundError: Requested device not found"){
+          alertify.notify("Không tìm thấy thiết bị trên máy tính của bạn", "error", 7)
+        }
+      });
+    });
+  });
 
 });
