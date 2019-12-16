@@ -154,7 +154,9 @@ function changeScreenChat(){
     enableEmojioneArea(divId);
 
     imageChat(divId);
-  })
+
+    videoChat(divId);
+  });
 }
 
 function convertEmoji() {
@@ -198,4 +200,8 @@ $(document).ready(function() {
 
   //click in first item
   $("ul.people").find("a")[0].click();
+
+  $("#video-chat-group").bind("click", function() {
+    alertify.notify("Tính năng không khả dụng với nhóm trò chuyện, vui lòng thử lại với trò chuyện cá nhân", "error", 7);
+  });
 });
