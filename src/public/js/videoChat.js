@@ -31,12 +31,15 @@ $(document).ready(function () {
   socket.on("server-send-listener-is-offline", function () {
     alertify.notify("Người dùng này hiện không trực tuyến.", "error", 7);
   });
+  let iceServerList = $("#ice-server-list").val();
+
   let getPeerId = "";
   let peer = new Peer({
     key: "peerjs",
     host: "peerjs-server-trungquandev.herokuapp.com",
     secure: true,
-    port: 443
+    port: 443,
+    config: {"iceServerS": JSON.parse(iceServerList)}
   });
   peer.on("open", function (peerId) {
     getPeerId = peerId;
